@@ -21,6 +21,7 @@ type Abilities struct {
 	Description string `json:"description,omitempty" bson:"description,omitempty"`
 }
 
+// GetAllPokemons - retrieves all Pokémon from the "pokemon" collection.
 func (p *Pokemon) GetAllPokemons() ([]Pokemon, error) {
 	collection := returnCollectionPointer("pokemon")
 
@@ -42,6 +43,7 @@ func (p *Pokemon) GetAllPokemons() ([]Pokemon, error) {
 	return pokemons, nil
 }
 
+// InsertPokemon adds a new Pokémon to the collection.
 func (p *Pokemon) InsertPokemon(pokemon Pokemon) error {
 	collection := returnCollectionPointer("pokemon")
 	_, err := collection.InsertOne(context.TODO(), Pokemon{
@@ -59,6 +61,7 @@ func (p *Pokemon) InsertPokemon(pokemon Pokemon) error {
 	return nil
 }
 
+// GetPokemonByName retrieves a single Pokémon by its name.
 func (p *Pokemon) GetPokemonByName(name string) (Pokemon, error) {
 	collection := returnCollectionPointer("pokemon")
 
@@ -72,6 +75,7 @@ func (p *Pokemon) GetPokemonByName(name string) (Pokemon, error) {
 	return pokemon, nil
 }
 
+// DeletePokemonByName deletes a Pokémon from the collection by name.
 func (p *Pokemon) DeletePokemonByName(name string) error {
 	collection := returnCollectionPointer("pokemon")
 	_, err := collection.DeleteOne(context.Background(), bson.D{{"name", name}})

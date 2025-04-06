@@ -11,6 +11,7 @@ type Response struct {
 	Code    int
 }
 
+// writeResponseError is used to handle error responses in a standardized format.
 func writeResponseError(w http.ResponseWriter, message string, code int) {
 	resp := Response{
 		Message: message,
@@ -22,6 +23,7 @@ func writeResponseError(w http.ResponseWriter, message string, code int) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+// writeResponse is used to handle successful responses in a standardized format.
 func writeResponse(w http.ResponseWriter, message string, code int) {
 	resp := Response{
 		Message: message,
@@ -39,12 +41,15 @@ func writeResponse(w http.ResponseWriter, message string, code int) {
 }
 
 var (
+	// StatusOkHandler is a reusable handler to send a success message with HTTP status 200 (OK).
 	StatusOkHandler = func(w http.ResponseWriter, message string) {
 		writeResponse(w, message, http.StatusOK)
 	}
+	// RequestErrorHandler is a reusable handler to send an error message with a given HTTP status code.
 	RequestErrorHandler = func(w http.ResponseWriter, message string, code int) {
 		writeResponseError(w, message, code)
 	}
+	// RequestSuccessHandler is a reusable handler to send a success message with a given HTTP status code.
 	RequestSuccessHandler = func(w http.ResponseWriter, message string, code int) {
 		writeResponse(w, message, code)
 	}

@@ -10,12 +10,14 @@ import (
 	"time"
 )
 
+// main - The entry point of the application
 func main() {
 	mongoClient, err := db.ConnectToMongo()
 	if err != nil {
 		log.Panic(err)
 	}
 
+	// Creates a 15-second context so if the connection with MongoDB takes longer than 15-seconds, it cancels the operation.
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 

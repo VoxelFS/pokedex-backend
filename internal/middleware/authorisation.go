@@ -8,8 +8,11 @@ import (
 
 var user services.User
 
+// Authorisation is middleware that protects routes by verifying session and CSRF tokens
 func Authorisation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		// Retrieve the admin user (in this case, hardcoded as "professor_oak")
 		admin, ok := user.GetUser("professor_oak")
 		if ok != nil {
 			write_response.RequestErrorHandler(w, "Unauthorized", http.StatusUnauthorized)

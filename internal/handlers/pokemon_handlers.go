@@ -9,8 +9,10 @@ import (
 	"net/http"
 )
 
+// pokemon is a variable that gives access to methods defined in the services.Pokemon service
 var pokemon services.Pokemon
 
+// GetAllPokemons handles GET requests to retrieve all Pokémon from the database
 func GetAllPokemons(w http.ResponseWriter, r *http.Request) {
 	pokemons, err := pokemon.GetAllPokemons()
 	if err != nil {
@@ -23,6 +25,7 @@ func GetAllPokemons(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(pokemons)
 }
 
+// InsertPokemon handles POST requests to add a new Pokémon to the database
 func InsertPokemon(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&pokemon)
 	if err != nil {
@@ -49,8 +52,9 @@ func InsertPokemon(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
+// GetPokemonByName handles GET requests to fetch a Pokémon by its name
 func GetPokemonByName(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "name")
+	id := chi.URLParam(r, "name") // Extract Pokémon name from the URL
 	pokemon1, err := pokemon.GetPokemonByName(id)
 	if err != nil {
 		write_response.RequestErrorHandler(w, "No Pokemon Found", http.StatusNotFound)
@@ -62,8 +66,9 @@ func GetPokemonByName(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(pokemon1)
 }
 
+// DeletePokemonByName handles DELETE requests to remove a Pokémon by name
 func DeletePokemonByName(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "name")
+	id := chi.URLParam(r, "name") // Extract Pokémon name from the URL
 	err := pokemon.DeletePokemonByName(id)
 	if err != nil {
 		write_response.RequestErrorHandler(w, "No Pokemon Found", http.StatusNotFound)

@@ -10,6 +10,8 @@ import (
 
 var user services.User
 
+// LoginHandler handles user login requests
+// It verifies credentials, sets session and CSRF cookies, and updates the user's session in the database
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	password := r.FormValue("password")
@@ -51,6 +53,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// LogoutHandler handles user logout requests
+// It clears cookies and removes session/CSRF tokens from the database
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	// Clear cookies
 	http.SetCookie(w, &http.Cookie{

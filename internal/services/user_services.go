@@ -14,6 +14,8 @@ type User struct {
 	CSRFToken      string `json:"csrf_token,omitempty" bson:"csrf_token,omitempty"`
 }
 
+// GetUser fetches a user from the DB by their username.
+// Returns a User object and an error (if any).
 func (u *User) GetUser(username string) (User, error) {
 	collection := returnCollectionPointer("user")
 
@@ -22,11 +24,12 @@ func (u *User) GetUser(username string) (User, error) {
 	err := collection.FindOne(context.Background(), bson.M{"user": username}).Decode(&user)
 	if err != nil {
 		log.Println(err)
-		return User{}, nil
+		return User{}, err
 	}
 	return user, nil
 }
 
+// SetSessionToken updates a user's session and CSRF tokens in the DB.
 func (u *User) SetSessionToken(sessionToken string, csrfToken string, username string) error {
 	collection := returnCollectionPointer("user")
 	update := bson.M{
@@ -43,6 +46,7 @@ func (u *User) SetSessionToken(sessionToken string, csrfToken string, username s
 	return nil
 }
 
+// ClearTokens clears session and CSRF tokens for a given user.
 func (u *User) ClearTokens(username string) error {
 	collection := returnCollectionPointer("user")
 	update := bson.M{
